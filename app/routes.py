@@ -11,6 +11,8 @@ from datetime import datetime
 from app.forms import ResetPasswordRequestForm
 from app.email import send_password_reset_email
 from app.forms import ResetPasswordForm
+from flask import g
+from flask_babel import get_locale
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -177,3 +179,8 @@ def reset_password(token):
         flash('Your password has been reset.')
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
+
+@app.before_request
+def before_request():
+    # ...
+    g.locale = str(get_locale())
